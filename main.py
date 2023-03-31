@@ -50,6 +50,7 @@ def get_item_info(items: list) -> list:
         json=payload,
         headers=headers
         )
+    
     return details.json()['data']
 
 
@@ -79,6 +80,7 @@ def webhook(i) -> None:
 def main() -> None:
     items = get_items()
     tprint(f'loaded {len(items)} items')
+    
     while True:
         tprint("looking for new items...")
         items = get_new(get_items(), items)
