@@ -55,11 +55,11 @@ def get_item_info(items: list) -> list:
 
 
 def webhook(i) -> None:
-    tprint(f'posting webhook for [khaki3]{i["name"]}[/]')
+    tprint(f"posting webhook for [khaki3]{i['name']}[/]")
 
     embed = DiscordEmbed(
         title=i['name'],
-        url=f'https://www.roblox.com/catalog/{i["id"]}',
+        url=f"https://www.roblox.com/catalog/{i['id']}",
         color=0x549454
         )
     embed.add_embed_field(name='Price', value=i.get('price', 'Offsale'), inline=True)
@@ -82,11 +82,11 @@ def main() -> None:
     tprint(f'loaded {len(items)} items')
     
     while True:
-        tprint("looking for new items...")
+        tprint('looking for new items...')
         items = get_new(get_items(), items)
         
         if items and len(items) < 100:
-            tprint("getting item info")
+            tprint('getting item info')
             item_info = get_item_info(items)
 
             for item in item_info:
