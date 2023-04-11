@@ -85,7 +85,7 @@ def main() -> None:
         tprint('looking for new items...')
         items = get_new(get_items(), items)
         
-        if items and len(items) < 100:
+        if len(items) < 100:
             tprint('getting item info')
             item_info = get_item_info(items)
 
