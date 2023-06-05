@@ -15,15 +15,20 @@ def tprint(text: str) -> None:
     print(f"[bold grey53][{now}] <>[/] {text}")
 
 def get_csrf(cookie) -> str:
-    return requests.post('https://auth.roblox.com/v2/logout', headers={'cookie': '.ROBLOSECURITY='+cookie}).headers['x-csrf-token']
+    res = requests.post('https://auth.roblox.com/v2/logout', headers={'cookie': '.ROBLOSECURITY='+cookie})
+    return res.headers['x-csrf-token']
 
 def get_thumbnail(item_id) -> str:
-    url = f'https://thumbnails.roblox.com/v1/assets?assetIds={item_id}&size=420x420&format=Png'
-    return requests.get(url).json()['data'][0]['imageUrl']
+    res = requests.get(
+        f'https://thumbnails.roblox.com/v1/assets?assetIds={item_id}&size=420x420&format=Png'
+    ).json()
+    return res['data'][0]['imageUrl']
 
 def get_items() -> list:
-    url = 'https://catalog.roblox.com/v1/search/items?category=Accessories&includeNotForSale=true&limit=120&salesTypeFilter=1&sortType=3&subcategory=Accessories'
-    return requests.get(url).json()['data']
+    res = requests.get(
+        'https://catalog.roblox.com/v1/search/items?category=Accessories&includeNotForSale=true&limit=120&salesTypeFilter=1&sortType=3&subcategory=Accessories'
+    ).json()
+    return res['data']
 
 
 def get_new(current, old) -> list:
@@ -43,13 +48,13 @@ def get_item_info(items: list) -> list:
     headers = {
         'cookie': f'.ROBLOSECURITY={cookie};',
         'x-csrf-token': get_csrf(cookie)
-        }
+    }
     
     details = requests.post(
         'https://catalog.roblox.com/v1/catalog/items/details',
         json=payload,
         headers=headers
-        )
+    )
     
     return details.json()['data']
 
@@ -61,7 +66,8 @@ def webhook(i) -> None:
         title=i['name'],
         url=f"https://www.roblox.com/catalog/{i['id']}",
         color=0x549454
-        )
+    )
+    
     embed.add_embed_field(name='Price', value=i.get('price', 'Offsale'), inline=True)
     embed.add_embed_field(name='Creator', value=i['creatorName'], inline=True)
     embed.add_embed_field(name='Description', value=f"```{i['description']}```", inline=False)
@@ -71,7 +77,8 @@ def webhook(i) -> None:
         url=webhook_url,
         username='new UGC item',
         rate_limit_retry=True
-        )
+    )
+    
     wh.add_embed(embed)
     wh.execute()
         
